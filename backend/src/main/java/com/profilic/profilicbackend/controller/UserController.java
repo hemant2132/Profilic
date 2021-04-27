@@ -1,6 +1,8 @@
 package com.profilic.profilicbackend.controller;
 
+import com.profilic.profilicbackend.model.Link;
 import com.profilic.profilicbackend.model.User;
+import com.profilic.profilicbackend.repository.LinkRepository;
 import com.profilic.profilicbackend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -10,6 +12,7 @@ import java.util.List;
 
 @RestController @RequestMapping("/api/users") public class UserController {
     @Autowired UserRepository userRepo;
+    @Autowired LinkRepository linkRepo;
 
     // Get all users
     @RequestMapping(value = "", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -38,5 +41,11 @@ import java.util.List;
     @RequestMapping(value = "/{uid}", method = RequestMethod.DELETE) public void deleteUser(
             @PathVariable("uid") String uid) {
         userRepo.delete(uid);
+    }
+
+    // Get all links of a user
+    @RequestMapping(value = "/{uid}/links", method = RequestMethod.GET) public List<Link> getUserLinks(
+            @PathVariable("uid") String uid) {
+        return linkRepo.getForUser(uid);
     }
 }
