@@ -10,6 +10,7 @@ const Header = () => {
   const handleLogout = async () => {
     try {
       await logout();
+      window.location.assign(window.location.origin);
     } catch (err) {
       alert(err.message);
     }
@@ -23,7 +24,16 @@ const Header = () => {
         </Button>
         {currentUser ? (
           <HStack>
-            <Button>{user && user.name}</Button>
+            <Button
+              onClick={() => {
+                if (user)
+                  window.location.assign(
+                    window.location.origin + '/' + user.userName
+                  );
+              }}
+            >
+              {user && user.name}
+            </Button>
             <Button onClick={handleLogout}>Logout</Button>
           </HStack>
         ) : null}
