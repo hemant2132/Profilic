@@ -8,19 +8,33 @@ import {
   Stack,
   Heading,
 } from '@chakra-ui/react';
+import { useUser } from '../../contexts/UserContext';
+import axios from 'axios';
 
 const Signin = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const { login } = useAuth();
+  const { assignUser } = useUser();
 
   const handleSignIn = async (event) => {
     event.preventDefault();
     try {
-      await login(email, password);
-    } catch (err) {
-      alert(err.message);
+      const userCredential = await login(email, password);
+      const user = userCredential.user;
+      axios({
+        method: 'GET',
+        url: `http://localhost:8080/api/users/${user.uid}`,
+      })
+        .then((res) => {
+          assignUser(res.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } catch (error) {
+      alert(error.message);
     }
   };
 

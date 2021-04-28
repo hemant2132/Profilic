@@ -18,7 +18,7 @@ const SignUp = () => {
   const [userName, setUserName] = useState('');
 
   const { signup } = useAuth();
-  const { setUser } = useUser();
+  const { assignUser } = useUser();
 
   const handleSignUp = async (event) => {
     event.preventDefault();
@@ -56,14 +56,14 @@ const SignUp = () => {
       })
         .then((res) => {
           if (res.status === 200) {
-            setUser(userObj);
+            assignUser(userObj);
           }
         })
         .catch((error) => {
           console.error(error);
         });
-    } catch (err) {
-      alert(err.message);
+    } catch (error) {
+      alert(error.message);
     }
   };
 
