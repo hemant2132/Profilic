@@ -15,9 +15,13 @@ import java.util.List;
     @Autowired LinkRepository linkRepo;
 
     // Get all users
-    @RequestMapping(value = "", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public List<User> getAllUsers(@RequestBody User user) {
-        return userRepo.getAll(user);
+    @RequestMapping(value = "", method = RequestMethod.GET) public List<User> getAllUsers(
+            @RequestParam(value = "name", required = false) String name,
+            @RequestParam(value = "userName", required = false) String userName,
+            @RequestParam(value = "org", required = false) String org,
+            @RequestParam(value = "location", required = false) String location,
+            @RequestParam(value = "role", required = false) String role) {
+        return userRepo.getAll(name, userName, org, location, role);
     }
 
     // Create a new user

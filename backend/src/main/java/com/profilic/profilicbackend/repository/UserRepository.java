@@ -13,32 +13,38 @@ import static java.sql.Types.VARCHAR;
 @Repository public class UserRepository {
     @Autowired JdbcTemplate jdbcTemplate;
 
-    public List<User> getAll(User query) {
+    public List<User> getAll(String name, String userName, String org, String location, String role) {
         StringBuilder sqlQuery = new StringBuilder("SELECT * FROM users WHERE name LIKE ");
         ArrayList<String> arrList = new ArrayList<>();
         ArrayList<Integer> typesList = new ArrayList<>();
 
-        if (query.getName() != null) {
-            sqlQuery.append("'%").append(query.getName()).append("%'");
+        if (name != null) {
+            sqlQuery.append("'%").append(name).append("%'");
         } else {
             sqlQuery.append("'%'");
         }
 
-        if (query.getOrg() != null) {
+        if (userName != null) {
+            sqlQuery.append(" AND userName = ?");
+            arrList.add(userName);
+            typesList.add(VARCHAR);
+        }
+
+        if (org != null) {
             sqlQuery.append(" AND org = ?");
-            arrList.add(query.getOrg());
+            arrList.add(org);
             typesList.add(VARCHAR);
         }
 
-        if (query.getLocation() != null) {
+        if (location != null) {
             sqlQuery.append(" AND location = ?");
-            arrList.add(query.getLocation());
+            arrList.add(location);
             typesList.add(VARCHAR);
         }
 
-        if (query.getRole() != null) {
+        if (role != null) {
             sqlQuery.append(" AND role = ?");
-            arrList.add(query.getRole());
+            arrList.add(role);
             typesList.add(VARCHAR);
         }
 
